@@ -7,43 +7,57 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 using namespace std;
 
 int main(){
   string filename;
-  fstream afile;
-
-  cout << "This is the document parser program.\n";
+  ifstream f;
+ cout << "This is the document parser program.\n";
   cout << "Enter a document name to be parsed: ";
   cin >> filename;
 
   cout << "Opening " << filename << "...\n";
-  afile.open(filename, ios::in );
+  f.open(filename);
 
-  if( !afile )
+  if( !f )
   {
     cout << "Error: File does not exist" << endl;
     return 1;
   }
-  else
-  {
-    string line;
-    getline(afile, line);
-    cout << line << endl;
-    /*
-    while ( getline (afile,line) )
-    {
-      cout << line << '\n';
-    }*/
+  string word;
+  vector<string> text;
 
-    /* while( !afile.eof() )
+  size_t found_txt = filename.find(".txt");
+  if(  found_txt!= string::npos )
+  {
+    cout << "You've uploaded a text file" << filename.find(".txt")  << endl;
+    while( !f.eof() )
     {
-      afile >> ch;
-      cout << ch;
-    } */
-    afile.close();
+      getline(f, word, ' ');
+      cout << word << endl;
+      text.push_back(word);
+    }
   }
+
+  size_t found_csv = filename.find(".csv");
+  if( found_csv != string::npos)
+  {
+    cout << "You've uploaded a comma delimited file" << endl;
+    while( !f.eof() )
+    {
+      getline(f, word, ',');
+      cout << word << "\t";
+      text.push_back(word);
+    }
+  }
+
+
+
+
+
+  f.close();
 
 
   return 0;
