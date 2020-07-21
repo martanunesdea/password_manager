@@ -11,54 +11,96 @@
 
 using namespace std;
 
-int main(){
+struct file{
+  string name;
+  string termination;
   string filename;
-  ifstream f;
- cout << "This is the document parser program.\n";
-  cout << "Enter a document name to be parsed: ";
-  cin >> filename;
+};
 
-  cout << "Opening " << filename << "...\n";
-  f.open(filename);
+void get_doc(struct file* doc)
+{
+  cout << "Welcome to the document parser program.\n";
+  cout << "Please enter the name you wish to use for the program: ";
+  getline(cin, doc->name, '.');
+  getline(cin, doc->termination);
+  doc->filename = doc->name + "." + doc->termination;
+}
+int program_menu()
+{
+  int menu_option;
+  cout << "Select the option you wish to use: \n";
+  cout << "1) Provide text metrics of document \n";
+  cout << "2) Categorise document by topic \n";
+  cout << "3) Encrypt document \n";
 
-  if( !f )
+  cin >> menu_option;
+  while ( menu_option > 3 || menu_option < 1)
   {
-    cout << "Error: File does not exist" << endl;
-    return 1;
+    cout << "Please enter a valid option\n";
+    cin >> menu_option;
   }
+  return menu_option;
+}
+void parse_doc(ifstream* f, struct file* doc)
+{
   string word;
   vector<string> text;
-
-  size_t found_txt = filename.find(".txt");
-  if(  found_txt!= string::npos )
+  if( doc->termination=="txt" )
   {
-    cout << "You've uploaded a text file" << filename.find(".txt")  << endl;
-    while( !f.eof() )
+    while( !f->eof() )
     {
-      getline(f, word, ' ');
+      getline(*f, word, ' ');
       cout << word << endl;
       text.push_back(word);
     }
   }
 
-  size_t found_csv = filename.find(".csv");
-  if( found_csv != string::npos)
+  if( doc->termination==".csv" )
   {
-    cout << "You've uploaded a comma delimited file" << endl;
-    while( !f.eof() )
+    while( !f->eof() )
     {
-      getline(f, word, ',');
+      getline(*f, word, ',');
       cout << word << "\t";
       text.push_back(word);
     }
   }
+}
 
 
+int main(){
+  file doc;
+  int menu_option;
+  ifstream f;
 
+  get_doc(&doc);
+  cout << "Opening " << doc.filename << "...\n";
+  f.open(doc.filename);
+  if( !f )
+  {
+    cout << "Error: File does not exist" << endl;
+    return 1;
+  }
 
+  menu_option = program_menu();
+  switch(menu_option)
+  {
+    case 1:
+      cout << "Showing metrics of document\n";
+      parse_doc(&f, &doc);
+      break;
+    case 2:
+      cout << "second menu option chosen\n";
+      break;
+    case 3:
+      cout << "third menu option chosen\n";
+      break;
+    default:
+      cout << "Default case\n";
+      break;
+  }
 
   f.close();
 
-
   return 0;
+
 }
