@@ -41,16 +41,16 @@ int program_menu()
   }
   return menu_option;
 }
-void parse_doc(ifstream* f, struct file* doc)
+void parse_doc(ifstream* f, struct file* doc, vector<string>* text)
 {
   string word;
-  vector<string> text;
+  //vector<string> text;
   if( doc->termination=="txt" )
   {
     while( !f->eof() )
     {
       getline(*f, word, ' ');
-      text.push_back(word);
+      text->push_back(word);
     }
   }
 
@@ -59,23 +59,26 @@ void parse_doc(ifstream* f, struct file* doc)
     while( !f->eof() )
     {
       getline(*f, word, ',');
-      text.push_back(word);
+      text->push_back(word);
     }
   }
 
   cout << "Output of begin and end: ";
-  for (auto i = text.begin(); i != text.end(); ++i)
+  for (auto i = text->begin(); i != text->end(); ++i)
   {
     cout << *i << " ";
   }
-
 }
-
+void rank_words_by_frequency(vector<string>* text, vector<string>* text_by_frequency)
+{
+  // find most used words in text;
+}
 
 int main(){
   file doc;
   int menu_option;
   ifstream f;
+  vector<string> text;
 
   get_doc(&doc);
   cout << "Opening " << doc.filename << "...\n";
@@ -90,12 +93,15 @@ int main(){
   switch(menu_option)
   {
     case 1:
+    {
       cout << "Showing metrics of document\n";
-      parse_doc(&f, &doc);
-      // rank_words_by_frequency();
+      parse_doc(&f, &doc, &text);
+      vector<string> text_by_frequency;
+      rank_words_by_frequency(&text, &text_by_frequency);
       // rank_words_by_length();
       // classify_words();
       break;
+    }
     case 2:
       cout << "second menu option chosen\n";
       break;
