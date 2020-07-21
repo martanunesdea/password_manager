@@ -50,7 +50,6 @@ void parse_doc(ifstream* f, struct file* doc)
     while( !f->eof() )
     {
       getline(*f, word, ' ');
-      cout << word << endl;
       text.push_back(word);
     }
   }
@@ -60,10 +59,16 @@ void parse_doc(ifstream* f, struct file* doc)
     while( !f->eof() )
     {
       getline(*f, word, ',');
-      cout << word << "\t";
       text.push_back(word);
     }
   }
+
+  cout << "Output of begin and end: ";
+  for (auto i = text.begin(); i != text.end(); ++i)
+  {
+    cout << *i << " ";
+  }
+
 }
 
 
@@ -87,6 +92,9 @@ int main(){
     case 1:
       cout << "Showing metrics of document\n";
       parse_doc(&f, &doc);
+      // rank_words_by_frequency();
+      // rank_words_by_length();
+      // classify_words();
       break;
     case 2:
       cout << "second menu option chosen\n";
