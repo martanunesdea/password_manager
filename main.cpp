@@ -8,112 +8,131 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <algorithm>
+#include "password.h"
+#include <time.h>
 
-using namespace std;
+const int kPasswordLength = 20;
 
-struct file{
-  string name;
-  string termination;
-  string filename;
-};
-
-void get_doc(struct file* doc)
-{
-  cout << "Welcome to the document parser program.\n";
-  cout << "Please enter the name you wish to use for the program: ";
-  getline(cin, doc->name, '.');
-  getline(cin, doc->termination);
-  doc->filename = doc->name + "." + doc->termination;
-}
 int program_menu()
 {
-  int menu_option;
-  cout << "Select the option you wish to use: \n";
-  cout << "1) Provide text metrics of document \n";
-  cout << "2) Categorise document by topic \n";
-  cout << "3) Encrypt document \n";
+  int menuOption;
+  std::cout << "This a password manager program, choose your option from the menu: \n";
+  std::cout << "1) Generate a new password \n";
+  std::cout << "2) Retrieve a password \n";
+  std::cout << "3) List of encrypted passwords \n";
 
-  cin >> menu_option;
-  while ( menu_option > 3 || menu_option < 1)
+  std::cin >> menuOption;
+  while ( menuOption > 3 || menuOption < 1)
   {
-    cout << "Please enter a valid option\n";
-    cin >> menu_option;
+    std::cout << "Please enter a valid option\n";
+    std::cin >> menuOption;
   }
-  return menu_option;
+  return menuOption;
 }
-void parse_doc(ifstream* f, struct file* doc, vector<string>* text)
+
+void print_password(std::vector<char> pass)
 {
-  string word;
-  //vector<string> text;
-  if( doc->termination=="txt" )
+  for(auto&& i : pass)
   {
-    while( !f->eof() )
-    {
-      getline(*f, word, ' ');
-      text->push_back(word);
-    }
+    std::cout << i;
   }
-
-  if( doc->termination==".csv" )
-  {
-    while( !f->eof() )
-    {
-      getline(*f, word, ',');
-      text->push_back(word);
-    }
-  }
-
-  cout << "Output of begin and end: ";
-  for (auto i = text->begin(); i != text->end(); ++i)
-  {
-    cout << *i << " ";
-  }
+  std::cout << "\n";
 }
-void rank_words_by_frequency(vector<string>* text, vector<string>* text_by_frequency)
+
+std::vector<char> random_password_generator(void)
 {
-  // find most used words in text;
+  std::vector<char> characters{'A','B', 'C', 'D','E','F','G','H','I','J','K','L','M','N','O','P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '?', '+', '-', '*', '%', '@', '#', '$', '&', '=', '^'};
+
+  int range = characters.size();
+
+  srand( time(NULL) );
+  int randomNumber;
+  std::vector<char> pw;
+  for(int i = 0; i < kPasswordLength; i++)
+  {
+    randomNumber = (rand() % (range-1)) + 1;
+    pw.push_back(characters.at(randomNumber));
+  }
+  std::cout << "size of password: " << pw.size() << std::endl;
+
+  return pw;
 }
+
+
+void save_new_password(std::vector<char> newPassword )
+{
+  std::string website, date;
+  std::cout << "\n\nTo save your password in the manager program,\n"
+
+            << " -> enter the site of the account created: ";
+  std::cin.ignore();
+  std::getline(std::cin, website, '\n');
+  if( website.empty() )
+  {
+    std::cout << "warning: field was empty" << std::endl;
+  }
+
+  std::cout << " -> enter the date of account creation:";
+  std::getline(std::cin, date, '\n');
+  if( date.empty() )
+  {
+    std::cout << "warning: date was empty" << std::endl;
+  }
+
+  Password entry;
+  entry.add_password_entry(website, date, newPassword);
+  //int key = entry.add_password_entry(website, date, random_password_generator() );
+  //entry.get_password(key);
+
+}
+
+void ask_user_to_save_password(std::vector<char> password)
+{
+  char answer;
+  std::cout << "Would you like to save your password (y/n) ";
+  std::cin >> answer;
+  if (answer == 'y' || answer == 'Y')
+  {
+    save_new_password(password);
+  }
+}
+
+std::vector<char> generate_new_password(void)
+{
+  std::string website;
+  std::string date;
+
+  auto newPassword = random_password_generator();
+  std::cout << "Your new password is: ";
+  print_password(newPassword);
+
+  return newPassword;
+}
+
 
 int main(){
-  file doc;
-  int menu_option;
-  ifstream f;
-  vector<string> text;
 
-  get_doc(&doc);
-  cout << "Opening " << doc.filename << "...\n";
-  f.open(doc.filename);
-  if( !f )
-  {
-    cout << "Error: File does not exist" << endl;
-    return 1;
-  }
-
-  menu_option = program_menu();
+  int menu_option = program_menu();
   switch(menu_option)
   {
     case 1:
     {
-      cout << "Showing metrics of document\n";
-      parse_doc(&f, &doc, &text);
-      vector<string> text_by_frequency;
-      rank_words_by_frequency(&text, &text_by_frequency);
-      // rank_words_by_length();
-      // classify_words();
+      auto password = generate_new_password();
+      ask_user_to_save_password(password);
       break;
     }
     case 2:
-      cout << "second menu option chosen\n";
+      std::cout << "second menu option chosen\n";
       break;
     case 3:
-      cout << "third menu option chosen\n";
+      std::cout << "third menu option chosen\n";
       break;
     default:
-      cout << "Default case\n";
+      std::cout << "Default case\n";
       break;
   }
 
-  f.close();
 
   return 0;
 
