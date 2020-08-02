@@ -31,7 +31,7 @@ int program_menu()
   return menuOption;
 }
 
-void print_password(std::vector<char> pass)
+void print_password(std::string pass)
 {
   for(auto&& i : pass)
   {
@@ -40,7 +40,7 @@ void print_password(std::vector<char> pass)
   std::cout << "\n";
 }
 
-std::vector<char> random_password_generator(void)
+std::string random_password_generator(void)
 {
   std::vector<char> characters{'A','B', 'C', 'D','E','F','G','H','I','J','K','L','M','N','O','P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '?', '+', '-', '*', '%', '@', '#', '$', '&', '=', '^'};
 
@@ -48,19 +48,18 @@ std::vector<char> random_password_generator(void)
 
   srand( time(NULL) );
   int randomNumber;
-  std::vector<char> pw;
+  std::string pw;
   for(int i = 0; i < kPasswordLength; i++)
   {
     randomNumber = (rand() % (range-1)) + 1;
     pw.push_back(characters.at(randomNumber));
   }
   std::cout << "size of password: " << pw.size() << std::endl;
-
   return pw;
 }
 
 
-void save_new_password(std::vector<char> newPassword )
+void save_new_password(std::string newPassword )
 {
   std::string website, date;
   std::cout << "\n\nTo save your password in the manager program,\n"
@@ -82,12 +81,13 @@ void save_new_password(std::vector<char> newPassword )
 
   Password entry;
   entry.add_password_entry(website, date, newPassword);
+  entry.save_password_entry(&entry);
   //int key = entry.add_password_entry(website, date, random_password_generator() );
   //entry.get_password(key);
 
 }
 
-void ask_user_to_save_password(std::vector<char> password)
+void ask_user_to_save_password(std::string password)
 {
   char answer;
   std::cout << "Would you like to save your password (y/n) ";
@@ -98,7 +98,7 @@ void ask_user_to_save_password(std::vector<char> password)
   }
 }
 
-std::vector<char> generate_new_password(void)
+std::string generate_new_password(void)
 {
   std::string website;
   std::string date;
