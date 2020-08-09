@@ -1,0 +1,3 @@
+/Users/martanunesdeabreu/doc_parser/build/CMakeFiles/rebuild_cache.dir
+/Users/martanunesdeabreu/doc_parser/build/CMakeFiles/edit_cache.dir
+/Users/martanunesdeabreu/doc_parser/build/CMakeFiles/password_manager.dir

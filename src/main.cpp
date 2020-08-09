@@ -11,6 +11,7 @@
 #include <algorithm>
 #include "password.h"
 #include <time.h>
+#include <mysqlx/xdevapi.h>
 
 const int kPasswordLength = 20;
 

@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/martanunesdeabreu/doc_parser/src/main.cpp
+cstdio
+-
+string
+-
+iostream
+-
+fstream
+-
+vector
+-
+algorithm
+-
+password.h
+/Users/martanunesdeabreu/doc_parser/src/password.h
+time.h
+-
+
+/Users/martanunesdeabreu/doc_parser/src/password.h
+iostream
+-
+string
+-
+vector
+-
+
