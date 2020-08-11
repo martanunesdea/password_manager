@@ -22,7 +22,18 @@ try {
   sess.sql("USE password_manager").execute();
   // sess.sql("CREATE TABLE password_table id INTEGER, account VARCHAR(20), password VARCHAR(50), date_created DATE);");
 
-  sess.sql("INSERT INTO password_table (account, password, date_created) VALUES ('dummy2', 'abcdef2', '2020-07-11') ").execute();
+  std::string account_name = "amazon";
+  std::string password = "seriously_random_password";
+  std::string formatted_date = "2020-07-13";
+
+  std::string insert = "INSERT INTO password_table (account, password, date_created) values ('";
+  insert += "amazon";
+  insert += "', '";
+  insert += password;
+  insert += "' , '";
+  insert += formatted_date;
+  insert += "'); ";
+  sess.sql(insert).execute();
   std::cout <<"adding to database..."<< std::endl;
 
 
@@ -30,8 +41,7 @@ try {
 
   Row row;
   while ((row = res.fetchOne())) {
-  std::cout << "Account: " << row[0] << std::endl;
-  std::cout << " Password: " << row[1] << std::endl;
+  std::cout << "Account: " << row[0] << "\t Password: " << row[1] << std::endl;
   }
 
   std::cout <<"Done!" << std::endl;
