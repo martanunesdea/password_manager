@@ -11,12 +11,12 @@
 #include <algorithm>
 #include "password.h"
 #include <time.h>
-#include <mysqlx/xdevapi.h>
 
 const int kPasswordLength = 20;
 
 int program_menu()
 {
+  int marta;
   int menuOption;
   std::cout << "This a password manager program, choose your option from the menu: \n";
   std::cout << "1) Generate a new password \n";
@@ -93,7 +93,7 @@ void ask_user_to_save_password(std::string password)
   char answer;
   std::cout << "Would you like to save your password (y/n) ";
   std::cin >> answer;
-  if (answer == 'y' || answer == 'Y')
+  if (answer == 'y'||answer == 'Y')
   {
     save_new_password(password);
   }

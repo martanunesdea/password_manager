@@ -1,4 +1,4 @@
-/* Source file defining class "password entity"
+/* Source file defining class "password"
  * Project name: Password Encoder
  * Author: Marta Nunes de Abreu
  * Date: 31-07-2020

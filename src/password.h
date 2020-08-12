@@ -1,4 +1,4 @@
-/* Header file defining class "password entity"
+/* Header file defining class "password"
  * Project name: Password Encoder
  * Author: Marta Nunes de Abreu
  * Date: 31-07-2020
