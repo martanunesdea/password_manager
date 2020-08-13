@@ -10,6 +10,7 @@
 #include <vector>
 #include <algorithm>
 #include "password.h"
+#include "database.h"
 #include <time.h>
 #include <mysqlx/xdevapi.h>
 
@@ -98,7 +99,7 @@ void ask_user_to_save_password(std::string password)
   std::cin >> answer;
   if (answer == 'y'||answer == 'Y')
   {
-    save_new_password(password);
+    save_password("apple", "12345", "2020-10-10");
   }
 }
 

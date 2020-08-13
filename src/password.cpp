@@ -9,7 +9,6 @@
 #include <fstream>
 #include <string>
 
-
 int get_last_key(void);
 
 Password::Password()

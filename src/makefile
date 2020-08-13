@@ -9,7 +9,7 @@ main: main.o password.o database.o
 	$(CXX) ${LDLIBS} -o main main.o password.o database.o
 
 # The main.o target can be written more simply
-main.o: main.cpp
+main.o: main.cpp password.h database.h
 	$(CXX) $(CXXFLAGS)  ${CPPFLAGS} -c main.cpp
 
 password.o: password.h

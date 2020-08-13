@@ -4,17 +4,14 @@
 
 using namespace ::mysqlx;
 
-int create_connection(void)
+int save_password(std::string account_name, std::string password, std::string formatted_date)
 {
 try {
+  #warning change pwd
+    const char *url = "mysqlx://root:sail-snow-london@127.0.0.1";
+    Session sess(url);
+    std::cout << "Creating session on " << url << " ..." << std::endl;
 
-#warning change pwd
-  const char   *url ="mysqlx://root:pwd@127.0.0.1";
-
-  std::cout << "Creating session on " << url
-       << " ..." << std::endl;
-
-  Session sess(url);
 
   std::cout <<"Session accepted, creating collection..." <<std::endl;
 
@@ -22,13 +19,13 @@ try {
 
   sess.sql("USE password_manager").execute();
   // sess.sql("CREATE TABLE password_table id INTEGER, account VARCHAR(20), password VARCHAR(50), date_created DATE);");
-
+  /*
   std::string account_name = "amazon";
   std::string password = "seriously_random_password";
   std::string formatted_date = "2020-07-13";
-
+  */
   std::string insert = "INSERT INTO password_table (account, password, date_created) values ('";
-  insert += "amazon";
+  insert += account_name;
   insert += "', '";
   insert += password;
   insert += "' , '";
