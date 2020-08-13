@@ -1,27 +1,19 @@
 MYSQL_CONCPP_DIR = /usr/local/mysql-connector-c++
 CPPFLAGS = -I $(MYSQL_CONCPP_DIR)/include -L $(MYSQL_CONCPP_DIR)/lib64
 LDLIBS = -lmysqlcppconn8
-CXX = clang++
+CXX = clang++ -stdlib=libc++
 CXXFLAGS = -std=c++11
-CC = clang++                        # compiler to use
+	# Targets needed to bring the executable up to date
 
-SRCS := $(wildcard *.cpp)
-BINS := $(SRCS:%.cpp=%)
+main: main.o password.o database.o
+	$(CXX) ${LDLIBS} -o main main.o password.o database.o
 
-all: main main.o password.o database.o
-
-main: main.o
-	@echo "Checking.."
-	${CC} main.o password.o database.o -o main
-
+# The main.o target can be written more simply
 main.o: main.cpp
-	@echo "Creating object.."
-	${CC} -std=c++11 -c main.cpp
+	$(CXX) $(CXXFLAGS)  ${CPPFLAGS} -c main.cpp
 
-password.o: password.cpp
-	@echo "Creating object.."
-	${CC} -std=c++11 -c password.cpp
+password.o: password.h
+	$(CXX) $(CXXFLAGS)  ${CPPFLAGS} -c password.cpp
 
-database.o: database.cpp
-	@echo "Creating object.."
-	${CC} -std=c++11 -c database.cpp
+database.o: database.cpp database.h
+	$(CXX) $(CXXFLAGS)  ${CPPFLAGS} -c database.cpp

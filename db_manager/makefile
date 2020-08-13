@@ -3,4 +3,15 @@ CPPFLAGS = -I $(MYSQL_CONCPP_DIR)/include -L $(MYSQL_CONCPP_DIR)/lib64
 LDLIBS = -lmysqlcppconn8
 CXX = clang++ -stdlib=libc++
 CXXFLAGS = -std=c++11
-main : main.cc
+	# Targets needed to bring the executable up to date
+
+main: main.o password.o
+	$(CXX) ${LDLIBS} -o main main.o password.o
+
+# The main.o target can be written more simply
+
+main.o: main.cpp
+	$(CXX) $(CXXFLAGS)  ${CPPFLAGS} -c main.cpp
+
+password.o: password.h
+#	$(CXX) $(CXXFLAGS)  ${CPPFLAGS} -c password.cpp
