@@ -12,8 +12,8 @@ main: main.o password.o database.o
 main.o: main.cpp password.h database.h
 	$(CXX) $(CXXFLAGS)  ${CPPFLAGS} -c main.cpp
 
-password.o: password.h
+password.o: password.h database.h
 	$(CXX) $(CXXFLAGS)  ${CPPFLAGS} -c password.cpp
 
-database.o: database.cpp database.h
+database.o: database.cpp database.h password.h
 	$(CXX) $(CXXFLAGS)  ${CPPFLAGS} -c database.cpp

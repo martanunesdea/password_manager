@@ -4,74 +4,65 @@
  * Date: 31-07-2020
  */
 #include "password.h"
+#include "database.h"
 #include <iostream>
 #include <vector>
 #include <fstream>
 #include <string>
 
+const int kPasswordLength = 20;
+
+std::string create_password(void)
+{
+  std::vector<char> characters{'A','B', 'C', 'D','E','F','G','H','I','J','K','L','M','N','O','P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '?', '+', '-', '*', '%', '@', '#', '$', '&', '=', '^'};
+
+  int range = characters.size();
+
+  srand( time(NULL) );
+  int randomNumber;
+  std::string pw;
+  for(int i = 0; i < kPasswordLength; i++)
+  {
+    randomNumber = (rand() % (range-1)) + 1;
+    pw.push_back(characters.at(randomNumber));
+  }
+  std::cout << "size of password: " << pw.size() << std::endl;
+  return pw;
+}
+
+
+
 int get_last_key(void);
 
-Password::Password()
+Password_entry::Password_entry()
 {
   std::cout << "password initiated" << std::endl;
 }
 
-Password::~Password()
+Password_entry::~Password_entry()
 {
   std::cout << "password deleted" << std::endl;
 }
 
-
-void Password::add_password_entry(std::string site, std::string date, std::string password)
+std::string Password_entry::get_password()
 {
-  website_ = site;
-  date_ = date;
+  return password_;
+}
+
+
+std::string Password_entry::get_website()
+{
+  return website_;
+}
+
+
+void Password_entry::make_password_entry(std::string password, std::string site)
+{
   password_ = password;
-
+  website_ = site;
 }
 
-std::string Password::get_password(int key)
+int Password_entry::save_password_entry()
 {
-  return "hey";
-}
-
-void Password::save_password_entry(Password* pass)
-{
-  std::fstream f;
-  f.open("database.txt", std::fstream::in | std::fstream::out | std::fstream::app);
-  if ( !f.is_open() )
-  {
-    std::cout << "Failed to open file" << std::endl;
-  }
-  int passId = get_last_key();
-  if (passId < 1)
-  {
-    pass->id_ = 1;
-  }
-  else{
-    pass->id_ = passId+1;
-  }
-  std::cout << "id is " << passId << std::endl;
-  f << "\n" << pass->id_ << "," << pass->website_ << "," << pass->date_ << "," << pass->password_ ;
-  std::cout << "saved password" << std::endl;
-  f.close();
-}
-
-int get_last_key(void)
-{
-  std::ifstream database;
-  database.open("../database.txt");
-  std::string line;
-  std::getline(database,line,'\n');
-
-  while( !database.eof() )
-  {
-    std::getline(database, line, '\n');
-    std::cout << line << std::endl;
-  }
-  std::cout << "got final line " << line << std::endl;
-  std::cout << "got last ID " << line.at(0) << std::endl;
-
-  int lastId = line.at(0);
-  return lastId;
+  return save_password(this);
 }
