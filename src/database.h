@@ -5,6 +5,7 @@
 #include "password.h"
 
 int save_password(Password_entry*);
+int retrieve_password(std::string website);
 int list_all_passwords(void);
 std::string make_insert_command(std::string website, std::string password);
 

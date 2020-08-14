@@ -11,7 +11,7 @@ int save_password(Password_entry *entry)
 try {
   #warning change pwd
   /* SETUP SESSION, SCHEMA AND TABLE */
-  const char *url = "mysqlx://root:sail-snow-london@127.0.0.1";
+  const char *url = "mysqlx://root:pwd@127.0.0.1";
   Session sess(url);
   Schema sch= sess.getSchema("password_manager");
   sess.sql("USE password_manager").execute();
@@ -44,13 +44,39 @@ try {
   return 0;
 }
 
+int retrieve_password(std::string website)
+{
+  #warning change pwd
+  /* SETUP SESSION, SCHEMA AND TABLE */
+  const char *url = "mysqlx://root:pwd@127.0.0.1";
+  Session sess(url);
+  Schema sch= sess.getSchema("password_manager");
+  sess.sql("USE password_manager").execute();
+
+  /* MAKE ENQUIRY */
+  std::string select = "SELECT * FROM password_table WHERE account='";
+  select += website;
+  select += "';";
+  RowResult res = sess.sql(select).execute();
+
+  /* SHOW OUTPUT */
+  Row row;
+  while ((row = res.fetchOne())) {
+    std::cout << "Account: " << row[1] << "\t Password: " << row[2] << std::endl;
+  }
+
+
+  return 0;
+}
+
+
 int list_all_passwords(void)
 {
   /* TRY */
 try {
   #warning change pwd
   /* SETUP SESSION, SCHEMA AND TABLE */
-  const char *url = "mysqlx://root:sail-snow-london@127.0.0.1";
+  const char *url = "mysqlx://root:pwd@127.0.0.1";
   Session sess(url);
   Schema sch= sess.getSchema("password_manager");
   sess.sql("USE password_manager").execute();

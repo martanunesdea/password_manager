@@ -61,6 +61,22 @@ std::string generate_new_password(void)
 }
 
 
+int retrieve_password_entry(void)
+{
+  std::string website;
+  std::cout << "What was the website name? ";
+  std::cin.ignore();
+  std::getline(std::cin, website, '\n');
+
+  while( website.empty() )
+  {
+    std::cout << "warning: field was empty" << std::endl;
+    std::cin >> website;
+  }
+
+  return retrieve_password(website);
+}
+
 int main(){
 
   int menu_option = program_menu();
@@ -81,7 +97,11 @@ int main(){
       break;
     }
     case 2:
-      std::cout << "second menu option chosen\n";
+      if(retrieve_password_entry()!=0)
+      {
+        // Error
+        return 1;
+      }
       break;
     case 3:
       if(list_all_passwords()!=0)
