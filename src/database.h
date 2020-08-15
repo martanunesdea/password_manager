@@ -4,8 +4,8 @@
 #include <iostream>
 #include "password.h"
 
-int save_password(Password_entry*);
-int retrieve_password(std::string website);
+int add_to_database(Password_entry*);
+int get_from_database(std::string website);
 int list_all_passwords(void);
 std::string make_insert_command(std::string website, std::string password);
 

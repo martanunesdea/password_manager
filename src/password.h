@@ -17,11 +17,11 @@ class Password_entry{
     Password_entry();
     ~Password_entry();
 
-    std::string get_password_entry(int key);
     std::string get_password();
     std::string get_website();
-    void make_password_entry(std::string , std::string );
-    int save_password_entry();
+    int create_password(void);
+    int save_password_entry(void);
+    int get_password_entry(void);
 
   private:
     std::string website_;
@@ -30,7 +30,6 @@ class Password_entry{
     int id_;
 };
 
-std::string create_password(void);
 
 
 #endif

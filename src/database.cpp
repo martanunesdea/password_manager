@@ -5,7 +5,7 @@
 
 using namespace ::mysqlx;
 
-int save_password(Password_entry *entry)
+int add_to_database(Password_entry *entry)
 {
   /* TRY */
 try {
@@ -44,7 +44,7 @@ try {
   return 0;
 }
 
-int retrieve_password(std::string website)
+int get_from_database(std::string website)
 {
   #warning change pwd
   /* SETUP SESSION, SCHEMA AND TABLE */

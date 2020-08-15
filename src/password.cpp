@@ -12,8 +12,33 @@
 
 const int kPasswordLength = 20;
 
-std::string create_password(void)
+int get_last_key(void);
+
+Password_entry::Password_entry()
 {
+  // Password initiated
+}
+
+Password_entry::~Password_entry()
+{
+  // Password deleted
+}
+
+std::string Password_entry::get_password(void)
+{
+  return password_;
+}
+
+
+std::string Password_entry::get_website(void)
+{
+  return website_;
+}
+
+int Password_entry::create_password(void)
+{
+  std::cout << "Generating password..." << std::endl;
+
   std::vector<char> characters{'A','B', 'C', 'D','E','F','G','H','I','J','K','L','M','N','O','P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '!', '?', '+', '-', '*', '%', '@', '#', '$', '&', '=', '^'};
 
   int range = characters.size();
@@ -26,43 +51,50 @@ std::string create_password(void)
     randomNumber = (rand() % (range-1)) + 1;
     pw.push_back(characters.at(randomNumber));
   }
-  std::cout << "size of password: " << pw.size() << std::endl;
-  return pw;
+  this->password_ = pw;
+
+  std::cout << "Your new password is: " << pw << std::endl;
+
+  return 0;
 }
 
-
-
-int get_last_key(void);
-
-Password_entry::Password_entry()
-{
-  std::cout << "password initiated" << std::endl;
-}
-
-Password_entry::~Password_entry()
-{
-  std::cout << "password deleted" << std::endl;
-}
-
-std::string Password_entry::get_password()
-{
-  return password_;
-}
-
-
-std::string Password_entry::get_website()
-{
-  return website_;
-}
-
-
-void Password_entry::make_password_entry(std::string password, std::string site)
-{
-  password_ = password;
-  website_ = site;
-}
 
 int Password_entry::save_password_entry()
 {
-  return save_password(this);
+  std::string website;
+  std::cout << " -> To save your password in the manager program, "
+              " enter the site of the account created: ";
+  std::cin.ignore();
+  std::getline(std::cin, website, '\n');
+
+  if( website.empty() )
+  {
+    std::cout << "error: Website field was empty, skipping saving" << std::endl;
+  }
+  if (website.find(" ") != std::string::npos)
+  {
+    char exit;
+    std::cout << " -> To skip saving, enter 'x': ";
+    std::cin >> exit;
+    if(exit=='x')
+      return -1;
+  }
+
+  this->website_ = website;
+  return add_to_database(this);
+}
+
+int Password_entry::get_password_entry(void)
+{
+  std::cout << "What was the website name? ";
+  std::cin.ignore();
+  std::getline(std::cin, this->website_, '\n');
+
+  while( this->website_.empty() )
+  {
+    std::cout << "warning: field was empty" << std::endl;
+    std::cin >> this->website_;
+  }
+
+  return get_from_database(this->website_);
 }
